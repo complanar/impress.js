@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Test spherical</title>
+
+    <meta name="description" content="Unit Test for impress.js spherical plugin." />
+    <meta name="author" content="Holger Teichert" />
+    <style>
+      .step {
+        display: block;
+        box-sizing: border-box;
+        width: 100px;
+        height: 100px;
+        background-color: white;
+        border: 1px solid black;
+        border-radius: 50px;
+        text-align: center;
+        padding-top: 30px;
+      }
+      .step.present {
+        border: 2px solid red;
+        z-index: 255;
+      }
+      #overview {
+        width: 1000px;
+        height: auto;
+        border: none;
+        background-color: transparent;
+        border-radius: 0;
+      }
+    </style>
+</head>
+
+<body class="impress-not-supported">
+
+    <div id="impress">
+
+        <section id="overview" class="step" data-x="0" data-y="-750" data-z="0" data-rotate-x="90">
+            <div style="height: 650px;"></div>
+            <h1>Spherical positioning test</h1>
+        </section>
+
+        <section id="start" class="step" data-x="0" data-y="0" data-z="500">
+          START
+        </section>
+
+        <script>
+          var phi, theta, color, scale, row, phiangle;
+          row = 0;
+          for ( theta = 15; theta < 180; theta += 15 ) {
+            for ( phi = 0; phi < 360; phi += 30 ) {
+
+              // Skip every second angle because of too tight spacing
+              if ( theta == 15 || theta == 165 ) {
+                phi += 30;
+              }
+              phiangle = phi; // + row * 360;
+              scale = 500 + ( Math.abs( theta - 90 ) - 90 ) * 1.25;
+              color = phi + ', ' + ( Math.ceil( theta / 180 * 100 ) ) + '%, 50%';
+              document.write(
+                '<section class="step" ' +
+                  'data-spherical-distance="500" ' +
+                  'data-spherical-phi="' + phi + '" ' +
+                  'data-spherical-theta="' + theta + '" ' +
+                  'data-rotate-x="' + ( theta ) + '" ' +
+                  'data-rotate-z="' + ( phiangle + 90 ) + '" ' +
+                  'data-rotate-order="zxy" ' +
+                  'style="background-color: hsl(' + color + ')"> ' +
+                  'PHI=' + phi + '<br>THETA=' + theta +
+                '</section>'
+              );
+            }
+            ++row;
+          }
+        </script>
+
+        <section id="end" class="step" data-x="0" data-y="0" data-z="-500"
+          data-rotate-x="180" data-rotate-z="450" data-rotate-order="zxy">
+          END
+        </section>
+    </div>
+
+    <script src="../../../js/impress.js"></script>
+    <script src="spherical.js"></script>
+    <script>
+      impress().init();
+    </script>
+
+</body>
+
+</html>
